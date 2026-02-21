@@ -5,11 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.hal.HAL;
+
+import static frc.robot.Constants.FuelConstants.INTAKE_FEEDFRONT;
+//import frc.robot.RobotContainer.driverController;
+
+
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
+import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  //SparkMax launcherMotor = new SparkMax(INTAKE_FEEDFRONT, MotorType.kBrushless);
 
   private RobotContainer m_robotContainer;
 
@@ -32,6 +42,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    CameraServer.startAutomaticCapture();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
@@ -105,6 +116,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+ 
   }
 
   @Override

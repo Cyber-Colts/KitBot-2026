@@ -4,16 +4,23 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveKinematicsConstraint;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.OperatorConstants.*;
+
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 import static frc.robot.Constants.FuelConstants.*;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANFuelSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -26,6 +33,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final CANFuelSubsystem ballSubsystem = new CANFuelSubsystem();
+
 
   // The driver's controller (PS5/PS5 style)
   private final CommandPS5Controller driverController = new CommandPS5Controller(
@@ -69,6 +77,10 @@ public class RobotContainer {
     .whileTrue(ballSubsystem.spinUpCommand().withTimeout(SPIN_UP_SECONDS)
       .andThen(ballSubsystem.launchCommand())
       .finallyDo(() -> ballSubsystem.stop()));
+  // While the R2 trigger is held, run the launcher motor only (direct control)
+  driverController.R2()
+    .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.runLauncher(), () -> ballSubsystem.stopLauncher()));
+ 
   // While the Cross (X) button is held on the PS controller, eject fuel back out the intake
   driverController.cross()
     .whileTrue(ballSubsystem.runEnd(() -> ballSubsystem.eject(), () -> ballSubsystem.stop()));

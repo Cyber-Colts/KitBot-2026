@@ -32,6 +32,7 @@ public class CANFuelSubsystem extends SubsystemBase {
   // launcherMotor: separated brushless motor (NEO)
   launcherMotor = new SparkMax(INTAKE_FEEDFRONT, MotorType.kBrushless);
 
+
     // put default values for various fuel operations onto the dashboard
     // all methods in this subsystem pull their values from the dashbaord to allow
     // you to tune the values easily, and then replace the values in Constants.java
@@ -91,6 +92,16 @@ public class CANFuelSubsystem extends SubsystemBase {
     launcherMotor.set(0);
     feederRoller.set(0);
     intakeRoller.set(0);
+  }
+
+  // Run launcher motor only (useful for direct operator control)
+  public void runLauncher() {
+    launcherMotor.setVoltage(SmartDashboard.getNumber("LAUNCHER value", LAUNCHER_VOLTAGE));
+  }
+
+   //Stop only the launcher motor
+  public void stopLauncher() {
+    launcherMotor.set(0);
   }
 
   // A method to spin up the launcher roller while spinning the feeder roller to
